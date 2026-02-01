@@ -24,7 +24,7 @@ SnapLink is a feature-rich, high-performance URL shortener built with Django, fe
 1.  **Clone the repository**:
 
     ```bash
-    git clone <repository-url>
+    git clone https://github.com/KESHABWI/url-shortener-django.git
     cd url-shortener-django
     ```
 
@@ -39,12 +39,6 @@ SnapLink is a feature-rich, high-performance URL shortener built with Django, fe
 
     ```bash
     pip install -r requirements.txt
-    ```
-
-    _Note: If `requirements.txt` is not present, install manually:_
-
-    ```bash
-    pip install django django-crispy-forms crispy-bootstrap5 qrcode[pil]
     ```
 
 4.  **Run Migrations**:
