@@ -1,0 +1,181 @@
+{% extends 'shortener/base.html' %} {% load crispy_forms_tags %} {% block title %}Dashboard - SnapLink{% endblock %} {% block content %}
+<div class="fade-in">
+  <div class="row mb-5">
+    <div class="col-lg-8 mx-auto">
+      <div class="card bg-white p-4 shadow-sm">
+        <h3 class="fw-bold mb-4">Shorten a New URL</h3>
+        <form action="{% url 'create_url' %}" method="post">
+          {% csrf_token %}
+          <div class="row g-3">
+            <div class="col-md-8">{{ form.long_url|as_crispy_field }}</div>
+            <div class="col-md-4">{{ form.custom_code|as_crispy_field }}</div>
+            <div class="col-12 mt-2">
+              <a
+                class="text-primary text-decoration-none small"
+                data-bs-toggle="collapse"
+                href="#advancedOptions"
+              >
+                + Advanced Options (Expiration)
+              </a>
+              <div class="collapse mt-2" id="advancedOptions">
+                {{ form.expires_at|as_crispy_field }}
+              </div>
+            </div>
+            <div class="col-12 mt-4 text-end">
+              <button type="submit" class="btn btn-primary btn-lg px-5">
+                Shorten
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <div class="card bg-white p-4 shadow-sm border-0">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <h4 class="fw-bold m-0">Your SnapLinks</h4>
+          <span class="badge bg-light text-dark px-3 py-2 rounded-pill border"
+            >{{ urls|length }} Links</span
+          >
+        </div>
+
+        {% if urls %}
+        <div class="table-responsive">
+          <table class="table table-hover align-middle">
+            <thead class="table-light">
+              <tr>
+                <th>Link</th>
+                <th>Clicks</th>
+                <th>Created</th>
+                <th>Expires</th>
+                <th class="text-end">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for url in urls %}
+              <tr>
+                <td>
+                  <div class="d-flex flex-column">
+                    <a
+                      href="{% url 'redirect_url' url.short_code %}"
+                      target="_blank"
+                      class="fw-bold text-primary text-decoration-none"
+                    >
+                      {{ request.get_host }}/{{ url.short_code }}
+                    </a>
+                    <span
+                      class="text-muted small text-truncate"
+                      style="max-width: 300px"
+                      >{{ url.long_url }}</span
+                    >
+                  </div>
+                </td>
+                <td>
+                  <span class="fw-medium">{{ url.clicks }}</span>
+                </td>
+                <td class="text-muted small">
+                  {{ url.created_at|date:"M d, Y" }}
+                </td>
+                <td>
+                  {% if url.expires_at %} {% if url.is_expired %}
+                  <span class="badge bg-danger-subtle text-danger"
+                    >Expired</span
+                  >
+                  {% else %}
+                  <span class="text-muted small"
+                    >{{ url.expires_at|date:"M d, Y" }}</span
+                  >
+                  {% endif %} {% else %}
+                  <span class="text-muted small">—</span>
+                  {% endif %}
+                </td>
+                <td class="text-end">
+                  <div class="dropdown">
+                    <button
+                      class="btn btn-light btn-sm rounded-circle"
+                      type="button"
+                      data-bs-toggle="dropdown"
+                    >
+                      <i class="bi bi-three-dots-vertical"></i>
+                    </button>
+                    <ul
+                      class="dropdown-content dropdown-menu dropdown-menu-end shadow-sm border-0 p-2"
+                    >
+                      <li>
+                        <a
+                          class="dropdown-item rounded"
+                          href="{% url 'edit_url' url.pk %}"
+                          >Edit</a
+                        >
+                      </li>
+                      <li>
+                        <a
+                          class="dropdown-item rounded"
+                          href="{% url 'qr_code' url.short_code %}"
+                          target="_blank"
+                          >View QR Code</a
+                        >
+                      </li>
+                      <li>
+                        <form
+                          action="{% url 'delete_url' url.pk %}"
+                          method="post"
+                        >
+                          {% csrf_token %}
+                          <button
+                            type="submit"
+                            class="dropdown-item text-danger rounded"
+                            onclick="return confirm('Delete this SnapLink?');"
+                          >
+                            Delete
+                          </button>
+                        </form>
+                      </li>
+                    </ul>
+                  </div>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        {% else %}
+        <div class="text-center py-5">
+          <img
+            src="https://illustrations.popsy.co/gray/link.svg"
+            alt="No links"
+            style="height: 150px"
+            class="mb-4"
+          />
+          <h5 class="text-muted">No links created yet. Start shortening!</h5>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %} {% block extra_css %}
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
+/>
+<style>
+  .dropdown-menu {
+    min-width: 120px;
+  }
+  .table th {
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+  }
+  .badge {
+    font-weight: 500;
+    font-size: 0.8rem;
+  }
+</style>
+{% endblock %}

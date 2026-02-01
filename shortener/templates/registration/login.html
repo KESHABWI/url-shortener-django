@@ -1,0 +1,26 @@
+{% extends 'shortener/base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}Login - SnapLink{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-5 fade-in">
+    <div class="card">
+      <h2 class="text-center mb-4 fw-bold">Welcome Back</h2>
+      <form method="post">
+        {% csrf_token %} {{ form|crispy }}
+        <div class="d-grid mt-4">
+          <button type="submit" class="btn btn-primary btn-lg">Login</button>
+        </div>
+      </form>
+      <div class="text-center mt-4 text-muted">
+        Don't have an account?
+        <a
+          href="{% url 'register' %}"
+          class="text-primary text-decoration-none fw-medium"
+          >Register here</a
+        >
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

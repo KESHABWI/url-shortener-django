@@ -1,0 +1,31 @@
+{% extends 'shortener/base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}Edit SnapLink - SnapLink{% endblock %}
+{% block content %}
+<div class="row justify-content-center fade-in">
+  <div class="col-md-6">
+    <div class="card bg-white shadow-sm">
+      <h2 class="fw-bold mb-4">Edit SnapLink</h2>
+      <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+          {{ form.long_url|as_crispy_field }}
+        </div>
+        <div class="mb-3">
+          {{ form.custom_code|as_crispy_field }}
+        </div>
+        <div class="mb-3">
+          {{ form.expires_at|as_crispy_field }}
+        </div>
+
+        <div class="d-flex justify-content-between align-items-center mt-4">
+          <a href="{% url 'dashboard' %}" class="btn btn-light">Back to Dashboard</a>
+          <button type="submit" class="btn btn-primary px-4">
+            Save Changes
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
