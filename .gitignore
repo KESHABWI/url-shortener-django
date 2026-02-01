@@ -1,0 +1,15 @@
+*.pyc
+__pycache__/
+venv/
+.env
+db.sqlite3
+.DS_Store
+*.log
+media/
+static_root/
+brain/
+implementation_plan.md
+task.md
+walkthrough.md
+how_to_test.md
+fix_templates.py
