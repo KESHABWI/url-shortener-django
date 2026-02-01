@@ -1,0 +1,12 @@
+services:
+  web:
+    build: .
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    environment:
+      - DJANGO_DEBUG=1
+      - ALLOWED_HOSTS=*
+    stdin_open: true
+    tty: true

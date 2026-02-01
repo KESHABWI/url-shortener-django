@@ -56,6 +56,17 @@ SnapLink is a feature-rich, high-performance URL shortener built with Django, fe
 6.  **Access the app**:
     Open `http://127.0.0.1:8000` in your browser.
 
+### Running with Docker
+
+1.  **Build and start the containers**:
+
+    ```bash
+    docker-compose up --build
+    ```
+
+2.  **Access the app**:
+    Open `http://127.0.0.1:8000` in your browser.
+
 ## 🧪 Running Tests
 
 To verify the application's functionality, run:
